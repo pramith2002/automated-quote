@@ -1,930 +1,738 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interior Design Quotation System</title>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nammane Interiors Quotation</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 10px;
-      }
-
-      .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-      }
-
-      .header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        text-align: center;
-      }
-
-      .header h1 {
-        font-size: clamp(1.5em, 5vw, 2.5em);
-        margin-bottom: 10px;
-      }
-
-      .header p {
-        font-size: clamp(0.9em, 2vw, 1.1em);
-      }
-
-      .client-info {
-        background: #f8f9fa;
-        padding: 15px 20px;
-        border-bottom: 2px solid #e9ecef;
-      }
-
-      .client-info-display {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-      }
-
-      .client-info-display div {
-        font-size: clamp(0.85em, 2vw, 1em);
-      }
-
-      .client-info-display strong {
-        color: #667eea;
-        display: block;
-        margin-bottom: 3px;
-      }
-
-      .floors-container {
-        padding: 15px;
-      }
-
-      .add-floor-section {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      .floor-card {
-        border: 3px solid #e9ecef;
-        border-radius: 15px;
-        margin-bottom: 20px;
-        overflow: hidden;
-        background: #f8f9fa;
-      }
-
-      .floor-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .floor-header h2 {
-        font-size: clamp(1.2em, 4vw, 1.8em);
-      }
-
-      .floor-header-actions {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      .floor-content {
-        padding: 15px;
-      }
-
-      .add-section-btn-container {
-        text-align: center;
-        margin: 15px 0;
-      }
-
-      .section {
-        margin-bottom: 20px;
-        border: 2px solid #dee2e6;
-        border-radius: 10px;
-        overflow: hidden;
-        background: white;
-      }
-
-      .section-header {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 12px 15px;
-        font-size: clamp(1em, 3vw, 1.2em);
-        font-weight: 600;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .section-header-actions {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      .units-list {
-        padding: 15px;
-      }
-
-      .unit-item {
-        background: #f8f9fa;
-        padding: 15px;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        border-left: 4px solid #667eea;
-      }
-
-      .unit-form {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 12px;
-        margin-bottom: 15px;
-      }
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .form-group label {
-        font-weight: 600;
-        margin-bottom: 5px;
-        color: #495057;
-        font-size: clamp(0.8em, 2vw, 0.9em);
-      }
-
-      .form-group input,
-      .form-group select {
-        padding: 10px;
-        border: 2px solid #dee2e6;
-        border-radius: 5px;
-        font-size: clamp(0.85em, 2vw, 1em);
-        transition: border-color 0.3s;
-      }
-
-      .form-group input:focus,
-      .form-group select:focus {
-        outline: none;
-        border-color: #667eea;
-      }
-
-      .unit-actions {
-        display: flex;
-        gap: 10px;
-        justify-content: flex-end;
-        margin-top: 10px;
-        flex-wrap: wrap;
-      }
-
-      .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s;
-        font-size: clamp(0.85em, 2vw, 1em);
-        white-space: nowrap;
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-
-      .btn:active {
-        transform: translateY(0);
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-      }
-
-      .btn-success {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-      }
-
-      .btn-danger {
-        background: #dc3545;
-        color: white;
-      }
-
-      .btn-danger:hover {
-        background: #c82333;
-      }
-
-      .btn-warning {
-        background: #ffc107;
-        color: #212529;
-      }
-
-      .btn-warning:hover {
-        background: #e0a800;
-      }
-
-      .btn-small {
-        padding: 6px 12px;
-        font-size: clamp(0.75em, 2vw, 0.9em);
-      }
-
-      .amount-display {
-        text-align: right;
-        font-size: clamp(0.9em, 2.5vw, 1.2em);
-        font-weight: 700;
-        color: #28a745;
-        margin-top: 10px;
-      }
-
-      .grand-total {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: clamp(1.3em, 5vw, 2em);
-        font-weight: 700;
-        margin: 20px 0;
-        border-radius: 10px;
-      }
-
-      .action-buttons {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        padding: 20px;
-        flex-wrap: wrap;
-      }
-
-      /* Print Styles */
-      .print-only {
-        display: none;
-      }
-
-      /* Modal Styles */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-
-      .modal.show {
-        display: flex;
-      }
-
-      .modal-content {
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        max-width: 500px;
-        width: 100%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        max-height: 90vh;
-        overflow-y: auto;
-      }
-
-      .modal-header {
-        font-size: clamp(1.3em, 4vw, 1.8em);
-        margin-bottom: 20px;
-        color: #667eea;
-        font-weight: 700;
-      }
-
-      .modal-buttons {
-        display: flex;
-        gap: 10px;
-        margin-top: 25px;
-        flex-wrap: wrap;
-      }
-
-      .modal-buttons .btn {
-        flex: 1;
-        min-width: 120px;
-      }
-
-      .btn-secondary {
-        background: #6c757d;
-        color: white;
-      }
-
-      .btn-secondary:hover {
-        background: #5a6268;
-      }
-
-      .empty-state {
-        text-align: center;
-        padding: 30px 15px;
-        color: #6c757d;
-      }
-
-      .empty-state h3 {
-        margin-bottom: 10px;
-        font-size: clamp(1em, 3vw, 1.2em);
-      }
-
-      .empty-state p {
-        font-size: clamp(0.85em, 2vw, 1em);
-      }
-
-      /* Mobile specific adjustments */
-      @media (max-width: 768px) {
         body {
-          padding: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 10px;
         }
 
         .container {
-          border-radius: 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        .floor-header,
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5em, 5vw, 2em);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: clamp(0.85em, 2vw, 1em);
+            opacity: 0.9;
+        }
+
+        .client-info {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .client-info-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .client-info-display div {
+            font-size: clamp(0.85em, 2vw, 0.95em);
+        }
+
+        .client-info-display strong {
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 3px;
+            font-size: 0.85em;
+        }
+
+        .floors-container {
+            padding: 20px;
+        }
+
+        .add-floor-section {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #dee2e6;
+        }
+
+        .floor-card {
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+
+        .floor-header {
+            background: #34495e;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .floor-header h2 {
+            font-size: clamp(1.1em, 4vw, 1.4em);
+            font-weight: 600;
+        }
+
+        .floor-header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .floor-content {
+            padding: 15px;
+        }
+
+        .add-section-btn-container {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 10px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+        }
+
         .section-header {
-          flex-direction: column;
-          align-items: flex-start;
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 10px 15px;
+            font-size: clamp(0.95em, 3vw, 1.1em);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid #dee2e6;
         }
 
-        .floor-header-actions,
         .section-header-actions {
-          width: 100%;
-          justify-content: flex-start;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .units-list {
+            padding: 15px;
+        }
+
+        /* Updated Unit Item Styling */
+        .unit-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .unit-delete-wrapper {
+            flex: 0 0 auto;
+        }
+
+        .unit-content-wrapper {
+            flex: 1;
+        }
+
+        .btn-icon-delete {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 1px solid #ffcdd2;
+            background: #ffebee;
+            color: #c62828;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.1em;
+        }
+
+        .btn-icon-delete:hover {
+            background: #ef9a9a;
+            color: white;
+            border-color: #ef9a9a;
+            transform: scale(1.1);
         }
 
         .unit-form {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
-        .modal-content {
-          padding: 20px;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #495057;
+            font-size: clamp(0.8em, 2vw, 0.85em);
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: clamp(0.85em, 2vw, 0.95em);
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: clamp(0.8em, 2vw, 0.9em);
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: clamp(0.75em, 2vw, 0.85em);
         }
 
         .amount-display {
-          font-size: 0.9em;
-          text-align: left;
+            text-align: right;
+            font-size: clamp(0.85em, 2.5vw, 1em);
+            font-weight: 600;
+            color: #2c3e50;
+            padding-top: 8px;
+            border-top: 1px dashed #dee2e6;
         }
-      }
 
-      @media print {
-        body {
-          background: white;
-          padding: 0;
-        }
-        .container {
-          box-shadow: none;
-          max-width: 100%;
-        }
-        .action-buttons,
-        .floor-header-actions,
-        .section-header-actions,
-        .unit-actions,
-        .add-floor-section,
-        .add-section-btn-container {
-          display: none !important;
-        }
-        .header {
-          background: white !important;
-          color: black !important;
-          border-bottom: 3px solid #000;
-        }
-        .client-info {
-          background: white !important;
-          border: 2px solid #000;
-          margin: 10px 0;
-        }
-        .floor-header {
-          background: #000 !important;
-          color: white !important;
-          page-break-before: always;
-        }
-        .section-header {
-          background: #333 !important;
-          color: white !important;
-        }
-        .unit-item {
-          border: 1px solid #ddd;
-          page-break-inside: avoid;
-        }
         .grand-total {
-          background: #000 !important;
-          color: white !important;
-          page-break-before: avoid;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: clamp(1.3em, 5vw, 1.8em);
+            font-weight: 700;
+            margin: 20px 0;
+            border-radius: 6px;
         }
-        .print-only {
-          display: block !important;
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            padding: 20px;
+            flex-wrap: wrap;
         }
-        .no-print {
-          display: none !important;
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin: 10px 0;
+
+        .modal.show {
+            display: flex;
         }
-        table th,
-        table td {
-          border: 1px solid #000;
-          padding: 8px;
-          text-align: left;
-          font-size: 10pt;
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        table th {
-          background: #f0f0f0;
-          font-weight: bold;
+
+        .modal-header {
+            font-size: clamp(1.2em, 4vw, 1.5em);
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 700;
         }
-        .terms-section {
-          page-break-before: always;
-          font-size: 9pt;
-          line-height: 1.4;
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            flex-wrap: wrap;
         }
-        .terms-section h3 {
-          margin-top: 15px;
-          margin-bottom: 10px;
+
+        .modal-buttons .btn {
+            flex: 1;
+            min-width: 120px;
         }
-      }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .floor-header,
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .floor-header-actions,
+            .section-header-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .unit-form {
+                grid-template-columns: 1fr;
+            }
+
+            .unit-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .unit-delete-wrapper {
+                align-self: flex-end;
+                margin-bottom: 10px;
+            }
+
+            .amount-display {
+                text-align: left;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+
+            /* Hide all action buttons in print mode */
+            .action-buttons,
+            .floor-header-actions,
+            .section-header-actions,
+            .add-floor-section,
+            .add-section-btn-container,
+            .btn-icon-delete {
+                display: none !important;
+            }
+
+            .header {
+                background: white !important;
+                color: black !important;
+                border-bottom: 3px solid #000;
+            }
+
+            .client-info {
+                background: white !important;
+                border: 2px solid #000;
+                margin: 10px 0;
+            }
+
+            .floor-header {
+                background: #000 !important;
+                color: white !important;
+                page-break-before: always;
+            }
+
+            .section-header {
+                background: #333 !important;
+                color: white !important;
+            }
+
+            .unit-item {
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+                display: block;
+                /* Remove flex in print */
+            }
+
+            .grand-total {
+                background: #000 !important;
+                color: white !important;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 10px 0;
+            }
+
+            table th,
+            table td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+                font-size: 10pt;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <!-- Client Info Modal -->
+</head>
+
+<body>
     <div id="clientModal" class="modal show">
-      <div class="modal-content">
-        <div class="modal-header">Client Information</div>
-        <div class="form-group">
-          <label>Client Name:</label>
-          <input type="text" id="clientName" placeholder="Enter client name" />
+        <div class="modal-content">
+            <div class="modal-header">Client Information</div>
+            <div class="form-group">
+                <label>Client Name:</label>
+                <input type="text" id="clientName" placeholder="Enter client name">
+            </div>
+            <div class="form-group">
+                <label>Location/Address:</label>
+                <input type="text" id="clientAddress" placeholder="Enter address">
+            </div>
+            <div class="form-group">
+                <label>Mobile Number:</label>
+                <input type="text" id="clientPhone" placeholder="+91 XXXXXXXXXX">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="skipClientInfo()">Skip</button>
+                <button class="btn btn-primary" onclick="saveClientInfo()">Continue</button>
+            </div>
         </div>
-        <div class="form-group">
-          <label>Location/Address:</label>
-          <input type="text" id="clientAddress" placeholder="Enter address" />
-        </div>
-        <div class="form-group">
-          <label>Mobile Number:</label>
-          <input type="text" id="clientPhone" placeholder="+91 XXXXXXXXXX" />
-        </div>
-        <div class="modal-buttons">
-          <button class="btn btn-secondary" onclick="skipClientInfo()">
-            Skip
-          </button>
-          <button class="btn btn-primary" onclick="saveClientInfo()">
-            Continue
-          </button>
-        </div>
-      </div>
     </div>
 
-    <!-- Add Section Modal -->
     <div id="sectionModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">Add New Section</div>
-        <div class="form-group">
-          <label>Section Type:</label>
-          <select id="sectionType">
-            <option value="Kitchen">Kitchen</option>
-            <option value="Living Room">Living Room</option>
-            <option value="Bedroom">Bedroom</option>
-            <option value="Puja Room">Puja Room</option>
-            <option value="Bathroom">Bathroom</option>
-            <option value="Garage">Garage</option>
-            <option value="Study Room">Study Room</option>
-            <option value="Dining Room">Dining Room</option>
-            <option value="Balcony">Balcony</option>
-            <option value="Staircase">Staircase</option>
-            <option value="Store Room">Store Room</option>
-            <option value="Terrace">Terrace</option>
-            <option value="Custom">Custom (Enter Below)</option>
-          </select>
+        <div class="modal-content">
+            <div class="modal-header">Add New Section</div>
+            <div class="form-group">
+                <label>Section Type:</label>
+                <select id="sectionType">
+                    <option value="Kitchen">Kitchen</option>
+                    <option value="Living Room">Living Room</option>
+                    <option value="Bedroom">Bedroom</option>
+                    <option value="Puja Room">Puja Room</option>
+                    <option value="Bathroom">Bathroom</option>
+                    <option value="Garage">Garage</option>
+                    <option value="Study Room">Study Room</option>
+                    <option value="Dining Room">Dining Room</option>
+                    <option value="Balcony">Balcony</option>
+                    <option value="Staircase">Staircase</option>
+                    <option value="Store Room">Store Room</option>
+                    <option value="Terrace">Terrace</option>
+                    <option value="Custom">Custom (Enter Below)</option>
+                </select>
+            </div>
+            <div class="form-group" id="customSectionGroup" style="display: none;">
+                <label>Custom Section Name:</label>
+                <input type="text" id="customSectionName" placeholder="Enter custom section name">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeSectionModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmAddSection()">Add Section</button>
+            </div>
         </div>
-        <div class="form-group" id="customSectionGroup" style="display: none">
-          <label>Custom Section Name:</label>
-          <input
-            type="text"
-            id="customSectionName"
-            placeholder="Enter custom section name"
-          />
-        </div>
-        <div class="modal-buttons">
-          <button class="btn btn-secondary" onclick="closeSectionModal()">
-            Cancel
-          </button>
-          <button class="btn btn-primary" onclick="confirmAddSection()">
-            Add Section
-          </button>
-        </div>
-      </div>
     </div>
 
     <div class="container">
-      <div class="header">
-        <h1>NAMMANE QUOTATION</h1>
-        <p>Interior Design Quotation System</p>
-      </div>
-
-      <div class="client-info">
-        <div class="client-info-display">
-          <div>
-            <strong>CLIENT NAME:</strong> <span id="displayName">-</span>
-          </div>
-          <div>
-            <strong>LOCATION:</strong> <span id="displayAddress">-</span>
-          </div>
-          <div><strong>MOB NO:</strong> <span id="displayPhone">-</span></div>
-          <div><strong>DATE:</strong> <span id="displayDate">-</span></div>
-        </div>
-      </div>
-
-      <div class="floors-container">
-        <div class="add-floor-section">
-          <button class="btn btn-primary" onclick="addFloor()">
-            + Add Floor
-          </button>
+        <div class="header">
+            <h1>NAMMANE INTERIORS QUOTATION</h1>
+            <p>Interior Design Quotation System</p>
         </div>
 
-        <div id="floorsContainer"></div>
-
-        <div class="grand-total">
-          GRAND TOTAL: ₹<span id="grandTotal">0</span>
+        <div class="client-info">
+            <div class="client-info-display">
+                <div><strong>CLIENT NAME:</strong> <span id="displayName">-</span></div>
+                <div><strong>LOCATION:</strong> <span id="displayAddress">-</span></div>
+                <div><strong>MOB NO:</strong> <span id="displayPhone">-</span></div>
+                <div><strong>DATE:</strong> <span id="displayDate">-</span></div>
+            </div>
         </div>
 
-        <div class="action-buttons">
-          <button class="btn btn-primary" onclick="generatePDF()">
-            📄 Download PDF
-          </button>
-          <button class="btn btn-primary" onclick="printQuotation()">
-            🖨️ Print Quotation
-          </button>
+        <div class="floors-container">
+            <div id="floorsContainer"></div>
+
+            <div class="add-floor-section">
+                <button class="btn btn-primary" onclick="addFloor()">+ Add New Floor</button>
+            </div>
+
+            <div class="grand-total">
+                GRAND TOTAL: ₹<span id="grandTotal">0</span>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="generatePDF()">📄 Download PDF</button>
+                <button class="btn btn-primary" onclick="printQuotation()">🖨️ Print Quotation</button>
+            </div>
         </div>
-      </div>
-
-      <!-- Terms and Conditions (Print Only) -->
-      <div class="print-only terms-section" style="padding: 30px">
-        <h2 style="text-align: center; margin-bottom: 20px">
-          MATERIAL SPECIFICATION
-        </h2>
-
-        <h3>Plywood & Laminates:</h3>
-        <p>
-          For all modular finish carcass, loft, shutters, panelling, partitions
-          & storage units are made up of 16mm IS 303 MR Grade Plywood with 1mm
-          decorative laminate finish
-          (MERINO/SKYDECOR/ADVANCE/GREENLAM/EQUIVALENT) and 0.8mm fabric
-          laminate outer & inner face of plywood respectively as per the client
-          selection. All exposed edges of ply sealed with 0.8mm thick edge
-          banding, 2mm thick edge banding for shutters & 1.3mm thick edge
-          banding for acrylic.
-        </p>
-        <p>
-          <strong>Note:</strong> In case of Kitchen base unit & vanity (only in
-          wet area) BWP grade (Boiling Water Proof) IS 710 of 16mm thick ply is
-          used. HDHMR 16mm grade ply is used for acrylic finish laminates. In
-          case the depth of the carcass exceeds the standard dimension (>600mm)
-          then there will be increase in the rate per sqft accordingly.
-        </p>
-
-        <h3>Accessories & Hardware:</h3>
-        <p>
-          Most of the hardware items are of EBCO/EQUIVALENT Brand.
-          (HETTICH/HAFELE only if specified). Handles, knobs & SS hanger rods
-          are of good brand. Locks-Europa.
-        </p>
-
-        <h3>False Ceiling & Lighting:</h3>
-        <p>
-          12mm Gypsum board on GI channel framework (SAINT GOBAIN/INDIA
-          GYPSUM/EQUIVALENT). Cove lighting with LED strips & down lights
-          (PHILIPS/HAVEL/WIPRO/EQUIVALENT). Provision of lights only if client
-          specifies. The quotation for false ceiling does not includes the putty
-          and painting cost, it comes under the scope of client.
-          <strong
-            >NOTE: PAINTING COST FOR FALSE CEILING IS NOT INCLUDED IN THE
-            QUOTATION AMOUNT MENTIONED ABOVE. IT COMES UNDER THE SCOPE OF
-            CLIENT.</strong
-          >
-        </p>
-
-        <h2 style="text-align: center; margin: 30px 0 20px 0">
-          TERMS & CONDITIONS
-        </h2>
-
-        <p>
-          <strong>1. Quotation Validity:</strong> 30 days from the date of
-          issue. Quoted rate may vary based on final design.
-        </p>
-
-        <p>
-          <strong>2. Design Revisions:</strong> Up to 2 free design revisions
-          are included. Further changes may incur additional charges.
-        </p>
-
-        <p>
-          <strong>3. Scope of Work:</strong> The scope includes only the items
-          and services mentioned in this quotation. Chimney, Hob, Counter top,
-          sink, mattress or any décor shown in 3D image is purely for
-          presentation purpose, it doesn't come under the scope of work unless
-          specified in quotation. Any additional work will be treated as
-          variation and charged extra.
-        </p>
-
-        <p>
-          <strong>4. Materials & Brands:</strong> Materials mentioned will be
-          used or matched as closely as possible. Equivalent brands will be used
-          if specified materials are unavailable, with client approval.
-        </p>
-
-        <p>
-          <strong>5. Work Schedule:</strong> The estimated project completion
-          time is 6 to 8 weeks from the date of clearance of 50% advance
-          payment. Any delays due to client-side changes or third-party
-          dependencies will not be our responsibility.
-        </p>
-
-        <p><strong>6. Payment Terms:</strong></p>
-        <ul>
-          <li>Payment Schedule: 10% advance on booking.</li>
-          <li>50% for commencement of work. (40% in case advanced earlier)</li>
-          <li>25% on against 1st stage of material delivery on site.</li>
-          <li>20% on against 2nd stage of material delivery on site</li>
-          <li>5% upon handover.</li>
-        </ul>
-        <p>
-          All payments to be made via cheque, NEFT, or UPI in favour of [Our
-          Company Name]. Delay of payment by more than 1 week at any stage of
-          the project will add concurrent days to the project delivery timeline
-          accordingly.
-        </p>
-
-        <p>
-          <strong>7. GST & Taxes:</strong> Quoted prices are exclusive of GST as
-          mentioned. Any changes in tax structure will be applicable at the time
-          of billing.
-        </p>
-
-        <p>
-          <strong>8. Site Access & Services:</strong> Uninterrupted site access,
-          electrical power, and water supply must be provided by the client
-          throughout the project duration. During work progress hand marks,
-          scratches are bound to occur and cannot be avoided, it is advisable
-          for the final coat paint after the completion of all interiors work.
-        </p>
-
-        <p>
-          <strong>9. Warranty:</strong> A standard 1-year service warranty is
-          applicable on workmanship. Manufacturer warranty applies only for
-          plywood for 10 years and not for hardwares. If any accessories,
-          hardwares, appliances are as per respective manufacturer warranty
-          policy. For any physical damages, negligence, unauthorized repairs or
-          any water seepage across the wall/floor/ceiling where all type of
-          plywood will be bound to get damage warranty will not considered at
-          any cost for such reasons.
-        </p>
-
-        <p>
-          <strong>10. Force Majeure:</strong> We are not liable for delays or
-          defaults due to circumstances beyond our control (e.g., natural
-          disasters, strikes, government regulations).
-        </p>
-
-        <p>
-          <strong>11. Cancellation / Refunds:</strong> All payments made at each
-          stage are Non-Refundable. Any cancellation after making payment (even
-          we commit to give best service & support) will not be refundable or
-          after material procurement will not be refundable.
-        </p>
-
-        <p>
-          <strong>12. Final Handover:</strong> The site will be handed over only
-          after full and final payment is received.
-        </p>
-
-        <p>
-          <strong>13. Floor Protection:</strong> Floor-covering is optional,
-          only if client opted before the commencement of work at site from our
-          end, then it will be on a chargeable basis.
-        </p>
-
-        <p>
-          <strong>14. Lost/Theft:</strong> We are not responsible for any loss
-          or theft in the house/apartment/villas during installation. Clients
-          are requested to exercise precaution by not keeping valuables during
-          the time of work.
-        </p>
-      </div>
     </div>
 
     <script>
-      // Price Data Storage (In-Memory)
-      const priceData = {
-        unitTypes: {
-          "TV Unit": { manual: 950, modular: 1200 },
-          "Storage Unit": { manual: 1100, modular: 1250 },
-          Wardrobe: { manual: 1200, modular: 1300 },
-          "Kitchen Base Unit": { manual: 1400, modular: 1550 },
-          "Kitchen Wall Unit": { manual: 1300, modular: 1400 },
-          "Kitchen Tall Unit": { manual: 1400, modular: 1550 },
-          "Dressing Unit": { manual: 1350, modular: 1450 },
-          "Side Table": { manual: 1200, modular: 1300 },
-          "Puja Base Unit": { manual: 1300, modular: 1400 },
-          Vanity: { manual: 1400, modular: 1500 },
-          "Book Storage": { manual: 1250, modular: 1350 },
-          Loft: { manual: 850, modular: 900 },
-          Panel: { manual: 1100, modular: 1200 },
-          "Seating Unit": { manual: 2100, modular: 2250 },
-        },
-        materialSpecs: [
-          "Laminates",
-          "Laminates, Rafters, AL Profile",
-          "Laminates and AL Profile",
-          "Laminates, CNC, Fluted Glass",
-          "Bevelled Glass",
-          "Acrylic",
-        ],
-      };
-
-      // Client Data
-      let clientData = {
-        name: "",
-        address: "",
-        phone: "",
-        date: new Date().toLocaleDateString(),
-      };
-
-      // Data Storage
-      let floors = {};
-      let floorCounter = 0;
-      let sectionCounter = 0;
-      let unitCounter = 0;
-      let currentFloorForSection = null;
-
-      // Initialize
-      document.getElementById("displayDate").textContent = clientData.date;
-
-      // Listen for section type change
-      document
-        .getElementById("sectionType")
-        .addEventListener("change", function () {
-          const customGroup = document.getElementById("customSectionGroup");
-          if (this.value === "Custom") {
-            customGroup.style.display = "block";
-          } else {
-            customGroup.style.display = "none";
-          }
-        });
-
-      function skipClientInfo() {
-        document.getElementById("clientModal").classList.remove("show");
-        initializeDefaultFloor();
-      }
-
-      function saveClientInfo() {
-        clientData.name = document.getElementById("clientName").value || "-";
-        clientData.address =
-          document.getElementById("clientAddress").value || "-";
-        clientData.phone = document.getElementById("clientPhone").value || "-";
-
-        document.getElementById("displayName").textContent = clientData.name;
-        document.getElementById("displayAddress").textContent =
-          clientData.address;
-        document.getElementById("displayPhone").textContent = clientData.phone;
-
-        document.getElementById("clientModal").classList.remove("show");
-        initializeDefaultFloor();
-      }
-
-      function initializeDefaultFloor() {
-        addFloor();
-        // Add default sections to ground floor
-        const groundFloorId = "floor-1";
-        addSection(groundFloorId, "Kitchen", true);
-        addSection(groundFloorId, "Living Room", true);
-        addSection(groundFloorId, "Puja Room", true);
-        addSection(groundFloorId, "Bedroom", true);
-      }
-
-      function addFloor() {
-        const floorId = `floor-${++floorCounter}`;
-        const floorName =
-          floorCounter === 1 ? "GROUND FLOOR" : `FLOOR ${floorCounter}`;
-
-        floors[floorId] = {
-          name: floorName,
-          sections: {},
+        // ============ PRICING STRUCTURE ============
+        const PRICING = {
+            manual: {
+                'Laminates': 950,
+                'Laminates, Rafters, AL Profile': 1100,
+                'Laminates and AL Profile': 1050,
+                'Laminates, CNC, Fluted Glass': 1250,
+                'Bevelled Glass': 1300,
+                'Acrylic': 1400
+            },
+            modular: {
+                'Laminates': 1200,
+                'Laminates, Rafters, AL Profile': 1350,
+                'Laminates and AL Profile': 1300,
+                'Laminates, CNC, Fluted Glass': 1500,
+                'Bevelled Glass': 1550,
+                'Acrylic': 1650
+            }
         };
 
-        const floorCard = document.createElement("div");
-        floorCard.className = "floor-card";
-        floorCard.id = floorId;
+        // Default units for each section type
+        const DEFAULT_UNITS = {
+            'Kitchen': ['Kitchen Base Unit', 'Kitchen Wall Unit', 'Kitchen Tall Unit'],
+            'Living Room': ['TV Unit', 'Crockery Unit', 'Display Unit'],
+            'Bedroom': ['Wardrobe', 'Dressing Unit', 'Side Table'],
+            'Puja Room': ['Puja Base Unit', 'Mandir Unit'],
+            'Bathroom': ['Vanity'],
+            'Study Room': ['Study Table', 'Bookshelf'],
+            'Dining Room': ['Dining Buffet', 'Crockery Unit'],
+            'Balcony': ['Storage Unit'],
+            'Staircase': ['Loft Storage'],
+            'Store Room': ['Storage Unit', 'Overhead Storage'],
+            'Terrace': ['Storage Unit'],
+            'Garage': ['Storage Unit']
+        };
 
-        floorCard.innerHTML = `
+        // Unit types list
+        const UNIT_TYPES = [
+            { group: 'Storage & Wardrobes', items: ['Sliding Wardrobe', 'Hinged Wardrobe', 'Walk-in Wardrobe', 'Storage Unit', 'Book Storage', 'Shoe Rack', 'Loft Storage', 'Overhead Storage', 'Wardrobe'] },
+            { group: 'Kitchen Units', items: ['Kitchen Base Unit', 'Kitchen Wall Unit', 'Kitchen Tall Unit', 'Kitchen Island', 'Breakfast Counter', 'Pantry Unit', 'Corner Unit'] },
+            { group: 'Living Room', items: ['TV Unit', 'TV Panel', 'Entertainment Unit', 'Crockery Unit', 'Display Unit', 'Console Table', 'Center Table', 'Showcase', 'Bar Unit', 'Foyer Unit'] },
+            { group: 'Bedroom Furniture', items: ['Side Table', 'Bedside Table', 'Dressing Unit', 'Dressing Table', 'Study Table', 'Headboard', 'Bed with Storage', 'Ottoman'] },
+            { group: 'Seating', items: ['Seating with Storage', 'Window Seating', 'Bay Window Seating', 'Sofa with Cushion', 'Bench Seating', 'Reading Nook'] },
+            { group: 'Study & Office', items: ['Study Wall Unit', 'Office Desk', 'Workstation', 'Bookshelf', 'Filing Cabinet', 'Computer Table'] },
+            { group: 'Bathroom & Utility', items: ['Vanity', 'Bathroom Cabinet', 'Medicine Cabinet', 'Linen Cabinet', 'Utility Unit', 'Laundry Cabinet'] },
+            { group: 'Puja & Mandir', items: ['Puja Base Unit', 'Mandir Unit', 'Pooja Wall Unit', 'Temple Unit'] },
+            { group: 'Panels & Partitions', items: ['Panel', 'Wall Panel', 'Decorative Panel', 'Fluted Panel', 'Partition', 'Jali Partition', 'Screen Partition'] },
+            { group: 'Dining Area', items: ['Dining Table', 'Dining Buffet', 'Sideboard', 'Wine Rack', 'Serving Counter'] },
+            { group: 'Other', items: ['Mirror Frame', 'Ceiling Design', 'False Ceiling', 'Shelving Unit', 'Floating Shelf', 'Niche Unit', 'Custom Unit'] }
+        ];
+
+        const MATERIALS = Object.keys(PRICING.manual);
+
+        // ============ DATA STORAGE ============
+        let clientData = {
+            name: '',
+            address: '',
+            phone: '',
+            date: new Date().toLocaleDateString()
+        };
+
+        let floors = {};
+        let floorCounter = 0;
+        let sectionCounter = 0;
+        let unitCounter = 0;
+        let currentFloorForSection = null;
+
+        // ============ INITIALIZATION ============
+        document.getElementById('displayDate').textContent = clientData.date;
+
+        document.getElementById('sectionType').addEventListener('change', function () {
+            const customGroup = document.getElementById('customSectionGroup');
+            customGroup.style.display = this.value === 'Custom' ? 'block' : 'none';
+        });
+
+        // ============ CLIENT INFO FUNCTIONS ============
+        function skipClientInfo() {
+            document.getElementById('clientModal').classList.remove('show');
+            initializeDefaultFloor();
+        }
+
+        function saveClientInfo() {
+            clientData.name = document.getElementById('clientName').value || '-';
+            clientData.address = document.getElementById('clientAddress').value || '-';
+            clientData.phone = document.getElementById('clientPhone').value || '-';
+
+            document.getElementById('displayName').textContent = clientData.name;
+            document.getElementById('displayAddress').textContent = clientData.address;
+            document.getElementById('displayPhone').textContent = clientData.phone;
+
+            document.getElementById('clientModal').classList.remove('show');
+            initializeDefaultFloor();
+        }
+
+        function initializeDefaultFloor() {
+            addFloor();
+            const groundFloorId = 'floor-1';
+            addSection(groundFloorId, 'Kitchen', true);
+            addSection(groundFloorId, 'Living Room', true);
+            addSection(groundFloorId, 'Puja Room', true);
+            addSection(groundFloorId, 'Bedroom', true);
+        }
+
+        // ============ FLOOR FUNCTIONS ============
+        function addFloor() {
+            const floorId = `floor-${++floorCounter}`;
+            const floorName = floorCounter === 1 ? 'GROUND FLOOR' : `FLOOR ${floorCounter}`;
+
+            floors[floorId] = {
+                name: floorName,
+                sections: {}
+            };
+
+            const floorCard = document.createElement('div');
+            floorCard.className = 'floor-card';
+            floorCard.id = floorId;
+
+            // Note: add-section-btn-container is now BELOW the sections div
+            floorCard.innerHTML = `
                 <div class="floor-header">
                     <h2>${floorName}</h2>
                     <div class="floor-header-actions">
-                        <button class="btn btn-warning btn-small" onclick="editFloorName('${floorId}')">✏️ Rename</button>
-                        <button class="btn btn-danger btn-small" onclick="deleteFloor('${floorId}')">🗑️ Delete</button>
+                        <button class="btn btn-secondary btn-small" onclick="editFloorName('${floorId}')">Rename</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteFloor('${floorId}')">Delete</button>
                     </div>
                 </div>
                 <div class="floor-content">
-                    <div class="add-section-btn-container">
-                        <button class="btn btn-success" onclick="openSectionModal('${floorId}')">+ Add Section</button>
-                    </div>
                     <div id="${floorId}-sections"></div>
+                    <div class="add-section-btn-container">
+                        <button class="btn btn-primary" onclick="openSectionModal('${floorId}')">+ Add Section</button>
+                    </div>
                 </div>
             `;
 
-        document.getElementById("floorsContainer").appendChild(floorCard);
-      }
-
-      function editFloorName(floorId) {
-        const newName = prompt("Enter new floor name:", floors[floorId].name);
-        if (newName && newName.trim()) {
-          floors[floorId].name = newName.trim();
-          document.querySelector(`#${floorId} .floor-header h2`).textContent =
-            newName.trim();
-        }
-      }
-
-      function deleteFloor(floorId) {
-        if (
-          confirm(
-            "Are you sure you want to delete this floor and all its sections?"
-          )
-        ) {
-          document.getElementById(floorId).remove();
-          delete floors[floorId];
-          updateGrandTotal();
-        }
-      }
-
-      function openSectionModal(floorId) {
-        currentFloorForSection = floorId;
-        document.getElementById("sectionType").value = "Kitchen";
-        document.getElementById("customSectionName").value = "";
-        document.getElementById("customSectionGroup").style.display = "none";
-        document.getElementById("sectionModal").classList.add("show");
-      }
-
-      function closeSectionModal() {
-        document.getElementById("sectionModal").classList.remove("show");
-        currentFloorForSection = null;
-      }
-
-      function confirmAddSection() {
-        const sectionType = document.getElementById("sectionType").value;
-        let sectionName;
-
-        if (sectionType === "Custom") {
-          sectionName = document
-            .getElementById("customSectionName")
-            .value.trim();
-          if (!sectionName) {
-            alert("Please enter a custom section name");
-            return;
-          }
-        } else {
-          sectionName = sectionType;
+            document.getElementById('floorsContainer').appendChild(floorCard);
         }
 
-        addSection(currentFloorForSection, sectionName);
-        closeSectionModal();
-      }
+        function editFloorName(floorId) {
+            const newName = prompt('Enter new floor name:', floors[floorId].name);
+            if (newName && newName.trim()) {
+                floors[floorId].name = newName.trim();
+                document.querySelector(`#${floorId} .floor-header h2`).textContent = newName.trim();
+            }
+        }
 
-      function addSection(floorId, sectionName, isDefault = false) {
-        const sectionId = `section-${++sectionCounter}`;
+        function deleteFloor(floorId) {
+            if (confirm('Are you sure you want to delete this floor and all its sections?')) {
+                document.getElementById(floorId).remove();
+                delete floors[floorId];
+                updateGrandTotal();
+            }
+        }
 
-        floors[floorId].sections[sectionId] = {
-          name: sectionName,
-          units: {},
-        };
+        // ============ SECTION FUNCTIONS ============
+        function openSectionModal(floorId) {
+            currentFloorForSection = floorId;
+            document.getElementById('sectionType').value = 'Kitchen';
+            document.getElementById('customSectionName').value = '';
+            document.getElementById('customSectionGroup').style.display = 'none';
+            document.getElementById('sectionModal').classList.add('show');
+        }
 
-        const sectionsContainer = document.getElementById(
-          `${floorId}-sections`
-        );
+        function closeSectionModal() {
+            document.getElementById('sectionModal').classList.remove('show');
+            currentFloorForSection = null;
+        }
 
-        const sectionDiv = document.createElement("div");
-        sectionDiv.className = "section";
-        sectionDiv.id = sectionId;
+        function confirmAddSection() {
+            const sectionType = document.getElementById('sectionType').value;
+            let sectionName;
 
-        sectionDiv.innerHTML = `
+            if (sectionType === 'Custom') {
+                sectionName = document.getElementById('customSectionName').value.trim();
+                if (!sectionName) {
+                    alert('Please enter a custom section name');
+                    return;
+                }
+            } else {
+                sectionName = sectionType;
+            }
+
+            addSection(currentFloorForSection, sectionName);
+            closeSectionModal();
+        }
+
+        function addSection(floorId, sectionName, isDefault = false) {
+            const sectionId = `section-${++sectionCounter}`;
+
+            floors[floorId].sections[sectionId] = {
+                name: sectionName,
+                units: {}
+            };
+
+            const sectionsContainer = document.getElementById(`${floorId}-sections`);
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section';
+            sectionDiv.id = sectionId;
+
+            sectionDiv.innerHTML = `
                 <div class="section-header">
                     <span>${sectionName.toUpperCase()}</span>
                     <div class="section-header-actions">
@@ -932,502 +740,314 @@
                         <button class="btn btn-danger btn-small" onclick="deleteSection('${floorId}', '${sectionId}')">Delete</button>
                     </div>
                 </div>
-                <div class="units-list" id="${sectionId}-units">
-                    <div class="empty-state">
-                        <h3>No units added yet</h3>
-                        <p>Click "+ Add Unit" to add items</p>
-                    </div>
-                </div>
+                <div class="units-list" id="${sectionId}-units"></div>
             `;
 
-        sectionsContainer.appendChild(sectionDiv);
-      }
+            sectionsContainer.appendChild(sectionDiv);
 
-      function deleteSection(floorId, sectionId) {
-        if (
-          confirm(
-            "Are you sure you want to delete this section and all its units?"
-          )
-        ) {
-          document.getElementById(sectionId).remove();
-          delete floors[floorId].sections[sectionId];
-          updateGrandTotal();
-        }
-      }
-
-      function addUnit(floorId, sectionId) {
-        const unitId = `unit-${++unitCounter}`;
-        const container = document.getElementById(`${sectionId}-units`);
-
-        // Remove empty state if exists
-        const emptyState = container.querySelector(".empty-state");
-        if (emptyState) emptyState.remove();
-
-        const unitDiv = document.createElement("div");
-        unitDiv.className = "unit-item";
-        unitDiv.id = unitId;
-
-        unitDiv.innerHTML = `
-                <div class="unit-form">
-                    <div class="form-group">
-                        <label>Unit:</label>
-                        <select id="${unitId}-unit" onchange="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
-                            <option value="">Select Unit</option>
-                            <optgroup label="Storage & Wardrobes">
-                                <option value="Sliding Wardrobe">Sliding Wardrobe</option>
-                                <option value="Hinged Wardrobe">Hinged Wardrobe</option>
-                                <option value="Walk-in Wardrobe">Walk-in Wardrobe</option>
-                                <option value="Storage Unit">Storage Unit</option>
-                                <option value="Book Storage">Book Storage</option>
-                                <option value="Shoe Rack">Shoe Rack</option>
-                                <option value="Loft Storage">Loft Storage</option>
-                                <option value="Overhead Storage">Overhead Storage</option>
-                            </optgroup>
-                            <optgroup label="Kitchen Units">
-                                <option value="Kitchen Base Unit">Kitchen Base Unit</option>
-                                <option value="Kitchen Wall Unit">Kitchen Wall Unit</option>
-                                <option value="Kitchen Tall Unit">Kitchen Tall Unit</option>
-                                <option value="Kitchen Island">Kitchen Island</option>
-                                <option value="Breakfast Counter">Breakfast Counter</option>
-                                <option value="Pantry Unit">Pantry Unit</option>
-                                <option value="Corner Unit">Corner Unit</option>
-                            </optgroup>
-                            <optgroup label="Living Room">
-                                <option value="TV Unit">TV Unit</option>
-                                <option value="TV Panel">TV Panel</option>
-                                <option value="Entertainment Unit">Entertainment Unit</option>
-                                <option value="Crockery Unit">Crockery Unit</option>
-                                <option value="Display Unit">Display Unit</option>
-                                <option value="Console Table">Console Table</option>
-                                <option value="Center Table">Center Table</option>
-                                <option value="Showcase">Showcase</option>
-                                <option value="Bar Unit">Bar Unit</option>
-                                <option value="Foyer Unit">Foyer Unit</option>
-                            </optgroup>
-                            <optgroup label="Bedroom Furniture">
-                                <option value="Side Table">Side Table</option>
-                                <option value="Bedside Table">Bedside Table</option>
-                                <option value="Dressing Unit">Dressing Unit</option>
-                                <option value="Dressing Table">Dressing Table</option>
-                                <option value="Study Table">Study Table</option>
-                                <option value="Headboard">Headboard</option>
-                                <option value="Bed with Storage">Bed with Storage</option>
-                                <option value="Ottoman">Ottoman</option>
-                            </optgroup>
-                            <optgroup label="Seating">
-                                <option value="Seating with Storage">Seating with Storage</option>
-                                <option value="Window Seating">Window Seating</option>
-                                <option value="Bay Window Seating">Bay Window Seating</option>
-                                <option value="Sofa with Cushion">Sofa with Cushion</option>
-                                <option value="Bench Seating">Bench Seating</option>
-                                <option value="Reading Nook">Reading Nook</option>
-                            </optgroup>
-                            <optgroup label="Study & Office">
-                                <option value="Study Wall Unit">Study Wall Unit</option>
-                                <option value="Office Desk">Office Desk</option>
-                                <option value="Workstation">Workstation</option>
-                                <option value="Bookshelf">Bookshelf</option>
-                                <option value="Filing Cabinet">Filing Cabinet</option>
-                                <option value="Computer Table">Computer Table</option>
-                            </optgroup>
-                            <optgroup label="Bathroom & Utility">
-                                <option value="Vanity">Vanity</option>
-                                <option value="Bathroom Cabinet">Bathroom Cabinet</option>
-                                <option value="Medicine Cabinet">Medicine Cabinet</option>
-                                <option value="Linen Cabinet">Linen Cabinet</option>
-                                <option value="Utility Unit">Utility Unit</option>
-                                <option value="Laundry Cabinet">Laundry Cabinet</option>
-                            </optgroup>
-                            <optgroup label="Puja & Mandir">
-                                <option value="Puja Base Unit">Puja Base Unit</option>
-                                <option value="Mandir Unit">Mandir Unit</option>
-                                <option value="Pooja Wall Unit">Pooja Wall Unit</option>
-                                <option value="Temple Unit">Temple Unit</option>
-                            </optgroup>
-                            <optgroup label="Panels & Partitions">
-                                <option value="Panel">Panel</option>
-                                <option value="Wall Panel">Wall Panel</option>
-                                <option value="Decorative Panel">Decorative Panel</option>
-                                <option value="Fluted Panel">Fluted Panel</option>
-                                <option value="Partition">Partition</option>
-                                <option value="Jali Partition">Jali Partition</option>
-                                <option value="Screen Partition">Screen Partition</option>
-                            </optgroup>
-                            <optgroup label="Dining Area">
-                                <option value="Dining Table">Dining Table</option>
-                                <option value="Dining Buffet">Dining Buffet</option>
-                                <option value="Sideboard">Sideboard</option>
-                                <option value="Wine Rack">Wine Rack</option>
-                                <option value="Serving Counter">Serving Counter</option>
-                            </optgroup>
-                            <optgroup label="Other">
-                                <option value="Mirror Frame">Mirror Frame</option>
-                                <option value="Ceiling Design">Ceiling Design</option>
-                                <option value="False Ceiling">False Ceiling</option>
-                                <option value="Shelving Unit">Shelving Unit</option>
-                                <option value="Floating Shelf">Floating Shelf</option>
-                                <option value="Niche Unit">Niche Unit</option>
-                                <option value="Custom Unit">Custom Unit</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Manual/Modular:</label>
-                        <select id="${unitId}-mode" onchange="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
-                            <option value="manual">Manual</option>
-                            <option value="modular">Modular</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Material:</label>
-                        <select id="${unitId}-material" onchange="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
-                            ${priceData.materialSpecs
-                              .map((m) => `<option value="${m}">${m}</option>`)
-                              .join("")}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Length (ft):</label>
-                        <input type="number" id="${unitId}-length" step="0.1" placeholder="0" 
-                               oninput="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
-                    </div>
-                    <div class="form-group">
-                        <label>Height (ft):</label>
-                        <input type="number" id="${unitId}-height" step="0.1" placeholder="0" 
-                               oninput="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
-                    </div>
-                </div>
-                <div class="amount-display">
-                    Area: <span id="${unitId}-area">0</span> sqft | 
-                    Rate: ₹<span id="${unitId}-rate">0</span>/sqft | 
-                    Amount: ₹<span id="${unitId}-amount">0</span>
-                </div>
-                <div class="unit-actions">
-                    <button class="btn btn-danger btn-small" onclick="deleteUnit('${floorId}', '${sectionId}', '${unitId}')">Delete</button>
-                </div>
-            `;
-
-        container.appendChild(unitDiv);
-
-        floors[floorId].sections[sectionId].units[unitId] = {
-          unit: "",
-          mode: "manual",
-          material: priceData.materialSpecs[0],
-          length: 0,
-          height: 0,
-          area: 0,
-          rate: 0,
-          amount: 0,
-        };
-      }
-
-      function updateUnit(floorId, sectionId, unitId) {
-        const unit = floors[floorId].sections[sectionId].units[unitId];
-
-        unit.unit = document.getElementById(`${unitId}-unit`).value;
-        unit.mode = document.getElementById(`${unitId}-mode`).value;
-        unit.material = document.getElementById(`${unitId}-material`).value;
-        unit.length =
-          parseFloat(document.getElementById(`${unitId}-length`).value) || 0;
-        unit.height =
-          parseFloat(document.getElementById(`${unitId}-height`).value) || 0;
-
-        unit.area = (unit.length * unit.height).toFixed(2);
-
-        // Find matching rate from priceData based on unit name
-        let matchedRate = 0;
-        if (unit.unit) {
-          // Try exact match first
-          if (priceData.unitTypes[unit.unit]) {
-            matchedRate = priceData.unitTypes[unit.unit][unit.mode];
-          } else {
-            // Try partial match
-            for (let key in priceData.unitTypes) {
-              if (
-                unit.unit.toLowerCase().includes(key.toLowerCase()) ||
-                key.toLowerCase().includes(unit.unit.toLowerCase())
-              ) {
-                matchedRate = priceData.unitTypes[key][unit.mode];
-                break;
-              }
-            }
-          }
-        }
-
-        unit.rate = matchedRate || 1200; // Default rate if no match found
-        unit.amount = (unit.area * unit.rate).toFixed(2);
-
-        document.getElementById(`${unitId}-area`).textContent = unit.area;
-        document.getElementById(`${unitId}-rate`).textContent = unit.rate;
-        document.getElementById(`${unitId}-amount`).textContent = unit.amount;
-
-        updateGrandTotal();
-      }
-
-      function deleteUnit(floorId, sectionId, unitId) {
-        document.getElementById(unitId).remove();
-        delete floors[floorId].sections[sectionId].units[unitId];
-
-        // Show empty state if no units left
-        const container = document.getElementById(`${sectionId}-units`);
-        if (container.children.length === 0) {
-          container.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No units added yet</h3>
-                        <p>Click "+ Add Unit" to add items</p>
-                    </div>
-                `;
-        }
-
-        updateGrandTotal();
-      }
-
-      function updateGrandTotal() {
-        let total = 0;
-
-        Object.values(floors).forEach((floor) => {
-          Object.values(floor.sections).forEach((section) => {
-            Object.values(section.units).forEach((unit) => {
-              total += parseFloat(unit.amount || 0);
+            // Add default units for this section type
+            const defaultUnits = DEFAULT_UNITS[sectionName] || [];
+            defaultUnits.forEach(unitName => {
+                addUnit(floorId, sectionId, unitName);
             });
-          });
-        });
-
-        document.getElementById("grandTotal").textContent = total.toFixed(2);
-      }
-
-      function generatePDF() {
-        const total = document.getElementById("grandTotal").textContent;
-
-        // Create HTML content matching the sample format exactly
-        let htmlContent = '<!DOCTYPE html><html><head><meta charset="UTF-8">';
-        htmlContent += "<title>Quotation - " + clientData.name + "</title>";
-        htmlContent += "<style>";
-        htmlContent += "@page { size: A4; margin: 10mm; }";
-        htmlContent +=
-          "body { font-family: Arial, sans-serif; font-size: 9pt; margin: 0; padding: 10px; }";
-        htmlContent +=
-          "h1 { text-align: center; font-size: 18pt; margin: 5px 0; }";
-        htmlContent += "h2 { font-size: 11pt; margin: 8px 0 5px 0; }";
-        htmlContent +=
-          ".client-info { border: 1px solid #000; padding: 8px; margin: 10px 0; }";
-        htmlContent +=
-          ".client-info table { width: 100%; border-collapse: collapse; }";
-        htmlContent +=
-          ".client-info td { padding: 3px; border: none; font-size: 9pt; }";
-        htmlContent +=
-          ".section-title { background: #000; color: white; padding: 5px 8px; margin: 8px 0 5px 0; font-size: 10pt; font-weight: bold; }";
-        htmlContent +=
-          "table.data { width: 100%; border-collapse: collapse; margin: 5px 0 10px 0; font-size: 8pt; table-layout: fixed; }";
-        htmlContent +=
-          "table.data th, table.data td { border: 1px solid #000; padding: 4px 6px; text-align: left; }";
-        htmlContent +=
-          "table.data th { background: #e0e0e0; font-weight: bold; text-align: center; }";
-        htmlContent += "table.data col:nth-child(1) { width: 18%; }";
-        htmlContent += "table.data col:nth-child(2) { width: 10%; }";
-        htmlContent += "table.data col:nth-child(3) { width: 22%; }";
-        htmlContent += "table.data col:nth-child(4) { width: 8%; }";
-        htmlContent += "table.data col:nth-child(5) { width: 8%; }";
-        htmlContent += "table.data col:nth-child(6) { width: 10%; }";
-        htmlContent += "table.data col:nth-child(7) { width: 12%; }";
-        htmlContent += "table.data col:nth-child(8) { width: 12%; }";
-        htmlContent +=
-          "table.data td:nth-child(4), table.data td:nth-child(5) { text-align: center; }";
-        htmlContent +=
-          "table.data td:nth-child(6), table.data td:nth-child(7), table.data td:nth-child(8) { text-align: right; }";
-        htmlContent +=
-          ".grand-total { background: #000; color: white; padding: 10px; text-align: center; font-size: 14pt; font-weight: bold; margin: 15px 0; }";
-        htmlContent +=
-          ".specs { font-size: 8pt; line-height: 1.4; margin: 10px 0; }";
-        htmlContent += ".specs h3 { font-size: 10pt; margin: 10px 0 5px 0; }";
-        htmlContent += ".specs p { margin: 5px 0; }";
-        htmlContent += ".specs ul { margin: 5px 0; padding-left: 20px; }";
-        htmlContent += ".page-break { page-break-before: always; }";
-        htmlContent += "</style></head><body>";
-
-        // Header
-        htmlContent += "<h1>NAMMANE- QUOTATION</h1>";
-
-        // Client Info
-        htmlContent += '<div class="client-info"><table>';
-        htmlContent +=
-          '<tr><td style="width:50%;"><strong>CLIENT NAME:</strong> ' +
-          clientData.name +
-          "</td>";
-        htmlContent +=
-          '<td style="width:50%;"><strong>DATE:</strong> ' +
-          clientData.date +
-          "</td></tr>";
-        htmlContent +=
-          "<tr><td><strong>LOCATION:</strong> " + clientData.address + "</td>";
-        htmlContent +=
-          "<td><strong>MOB NO:</strong> " + clientData.phone + "</td></tr>";
-        htmlContent += "</table></div>";
-
-        htmlContent += '<div class="section-title">DESIGN SPECIFICATION</div>';
-
-        // Build data table
-        Object.values(floors).forEach(function (floor) {
-          htmlContent += "<h2>" + floor.name + "</h2>";
-
-          Object.values(floor.sections).forEach(function (section) {
-            const units = Object.values(section.units);
-            if (units.length > 0) {
-              htmlContent +=
-                '<div style="font-weight: bold; margin: 8px 0 4px 0; text-transform: uppercase;">' +
-                section.name +
-                "</div>";
-              htmlContent += '<table class="data">';
-              htmlContent += "<colgroup>";
-              htmlContent += "<col><col><col><col><col><col><col><col>";
-              htmlContent += "</colgroup>";
-              htmlContent += "<thead><tr>";
-              htmlContent += "<th>UNIT</th>";
-              htmlContent += "<th>Manual/<br>Modular</th>";
-              htmlContent += "<th>Material Specification</th>";
-              htmlContent += "<th>L in ft</th>";
-              htmlContent += "<th>B in ft</th>";
-              htmlContent += "<th>Area<br>(Sqft)</th>";
-              htmlContent += "<th>Rate per<br>Sqft</th>";
-              htmlContent += "<th>Amount</th>";
-              htmlContent += "</tr></thead><tbody>";
-
-              units.forEach(function (unit) {
-                htmlContent += "<tr>";
-                htmlContent += "<td>" + (unit.unit || "-") + "</td>";
-                htmlContent +=
-                  '<td style="text-transform: uppercase;">' +
-                  unit.mode +
-                  "</td>";
-                htmlContent += "<td>" + unit.material + "</td>";
-                htmlContent +=
-                  '<td style="text-align: center;">' + unit.length + "</td>";
-                htmlContent +=
-                  '<td style="text-align: center;">' + unit.height + "</td>";
-                htmlContent += "<td>" + unit.area + "</td>";
-                htmlContent += "<td>" + unit.rate + "</td>";
-                htmlContent += "<td><strong>" + unit.amount + "</strong></td>";
-                htmlContent += "</tr>";
-              });
-
-              htmlContent += "</tbody></table>";
-            }
-          });
-        });
-
-        htmlContent +=
-          '<div class="grand-total">GRAND TOTAL= ' + total + "</div>";
-
-        // Material Specifications
-        htmlContent += '<div class="page-break"></div>';
-        htmlContent += '<div class="specs">';
-        htmlContent +=
-          '<h2 style="text-align: center;">MATERIAL SPECIFICATION</h2>';
-
-        htmlContent += "<h3>Plywood & Laminates:</h3>";
-        htmlContent +=
-          "<p>For all modular finish carcass, loft, shutters, panelling, partitions & storage units are made up of 16mm IS 303 MR Grade Plywood with 1mm decorative laminate finish (MERINO /SKYDECOR /ADVANCE /GREENLAM /EQUIVALENT) and 0.8mm fabric laminate outer & inner face of plywood respectively as per the client selection. All exposed edges of ply sealed with 0.8mm thick edge banding, 2mm thick edge banding for shutters & 1.3mm thick edge banding for acrylic.</p>";
-        htmlContent +=
-          "<p><strong>Note:</strong> In case of Kitchen base unit & vanity (only in wet area) BWP grade (Boiling Water Proof) IS 710 of 16mm thick ply is used. HDHMR 16mm grade ply is used for acrylic finish laminates. In case the depth of the carcass exceeds the standard dimension( >600mm) then there will be increase in the rate per sqft accordingly.</p>";
-
-        htmlContent += "<h3>Accessories & Hardware:</h3>";
-        htmlContent +=
-          "<p>Most of the hardware items are of EBCO/EQUIVALENT Brand. (HETTICH/HAFELE only if specified). Handles, knobs & SS hanger rods are of good brand. Locks-Europa.</p>";
-
-        htmlContent += "<h3>False ceiling & Lighting:</h3>";
-        htmlContent +=
-          "<p>12mm Gypsum board on GI channel framework (SAINT GOBAIN/INDIA GYPSUM/ EQUIVALENT). Cove lighting with LED strips & down lights (PHILIPS/HAVEL/WIPRO/EQUIVALENT). Provision of lights only if client specifies. The quotation for false ceiling does not includes the putty and painting cost, it comes under the scope of client. <strong>NOTE: PAINTING COST FOR FALSE CEILING IS NOT INCLUDED IN THE QUOTATION AMOUNT MENTIONED ABOVE. IT COMES UNDER THE SCOPE OF CLIENT.</strong></p>";
-
-        htmlContent +=
-          '<h2 style="text-align: center; margin: 20px 0 15px 0;">TERMS & CONDITIONS</h2>';
-
-        htmlContent +=
-          "<p><strong>1. Quotation Validity:</strong> 30 days from the date of issue. Quoted rate may vary based on final design.</p>";
-        htmlContent +=
-          "<p><strong>2. Design Revisions:</strong> Up to 2 free design revisions are included. Further changes may incur additional charges.</p>";
-        htmlContent +=
-          "<p><strong>3. Scope of Work:</strong> The scope includes only the items and services mentioned in this quotation. Chimney, Hob, Counter top, sink, mattress or any décor shown in 3D image is purely for presentation purpose, it doesn't come under the scope of work unless specified in quotation. Any additional work will be treated as variation and charged extra.</p>";
-        htmlContent +=
-          "<p><strong>4. Materials & Brands:</strong> Materials mentioned will be used or matched as closely as possible. Equivalent brands will be used if specified materials are unavailable, with client approval.</p>";
-        htmlContent +=
-          "<p><strong>5. Work Schedule:</strong> The estimated project completion time is 6 to 8 weeks from the date of clearance of 50% advance payment. Any delays due to client-side changes or third-party dependencies will not be our responsibility.</p>";
-
-        htmlContent += "<p><strong>6. Payment Terms:</strong></p>";
-        htmlContent += "<ul>";
-        htmlContent += "<li>Payment Schedule: 10% advance on booking.</li>";
-        htmlContent +=
-          "<li>50% for commencement of work. (40% in case advanced earlier)</li>";
-        htmlContent +=
-          "<li>25% on against 1st stage of material delivery on site.</li>";
-        htmlContent +=
-          "<li>20% on against 2nd stage of material delivery on site</li>";
-        htmlContent += "<li>5% upon handover.</li>";
-        htmlContent += "</ul>";
-        htmlContent +=
-          "<p>All payments to be made via cheque, NEFT, or UPI. Delay of payment by more than 1 week at any stage of the project will add concurrent days to the project delivery timeline accordingly.</p>";
-
-        htmlContent +=
-          "<p><strong>7. GST & Taxes:</strong> Quoted prices are exclusive of GST as mentioned. Any changes in tax structure will be applicable at the time of billing.</p>";
-        htmlContent +=
-          "<p><strong>8. Site Access & Services:</strong> Uninterrupted site access, electrical power, and water supply must be provided by the client throughout the project duration. During work progress hand marks, scratches are bound to occur and cannot be avoided, it is advisable for the final coat paint after the completion of all interiors work.</p>";
-        htmlContent +=
-          "<p><strong>9. Warranty:</strong> A standard 1-year service warranty is applicable on workmanship. Manufacturer warranty applies only for plywood for 10 years and not for hardwares. If any accessories, hardwares, appliances are as per respective manufacturer warranty policy. For any physical damages, negligence, unauthorized repairs or any water seepage across the wall/floor/ceiling where all type of plywood will be bound to get damage warranty will not considered at any cost for such reasons.</p>";
-        htmlContent +=
-          "<p><strong>10. Force Majeure:</strong> We are not liable for delays or defaults due to circumstances beyond our control (e.g., natural disasters, strikes, government regulations).</p>";
-        htmlContent +=
-          "<p><strong>11. Cancellation / Refunds:</strong> All payments made at each stage are Non-Refundable. Any cancellation after making payment will not be refundable or after material procurement will not be refundable.</p>";
-        htmlContent +=
-          "<p><strong>12. Final Handover:</strong> The site will be handed over only after full and final payment is received.</p>";
-        htmlContent +=
-          "<p><strong>13. Floor Protection:</strong> Floor-covering is optional, only if client opted before the commencement of work at site from our end, then it will be on a chargeable basis.</p>";
-        htmlContent +=
-          "<p><strong>14. Lost/Theft:</strong> We are not responsible for any loss or theft in the house/apartment/villas during installation. Clients are requested to exercise precaution by not keeping valuables during the time of work.</p>";
-
-        htmlContent += "</div></body></html>";
-
-        // Check if mobile device
-        const isMobile =
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-          );
-
-        if (isMobile) {
-          // For mobile: Create a downloadable file
-          const blob = new Blob([htmlContent], { type: "text/html" });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download =
-            "Quotation_" +
-            clientData.name.replace(/\s+/g, "_") +
-            "_" +
-            new Date().getTime() +
-            ".html";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-
-          alert(
-            'Quotation HTML file downloaded! Open it in your browser and use "Print to PDF" option to save as PDF.'
-          );
-        } else {
-          // For desktop: Open in new window for printing
-          const printWindow = window.open("", "_blank");
-          printWindow.document.write(htmlContent);
-          printWindow.document.close();
-
-          printWindow.onload = function () {
-            printWindow.focus();
-            setTimeout(function () {
-              printWindow.print();
-            }, 250);
-          };
         }
-      }
-      function printQuotation() {
-        window.print();
-      }
+
+        function deleteSection(floorId, sectionId) {
+            if (confirm('Are you sure you want to delete this section and all its units?')) {
+                document.getElementById(sectionId).remove();
+                delete floors[floorId].sections[sectionId];
+                updateGrandTotal();
+            }
+        }
+
+        // ============ UNIT FUNCTIONS ============
+        function addUnit(floorId, sectionId, defaultUnitName = '') {
+            const unitId = `unit-${++unitCounter}`;
+            const container = document.getElementById(`${sectionId}-units`);
+
+            const unitDiv = document.createElement('div');
+            unitDiv.className = 'unit-item';
+            unitDiv.id = unitId;
+
+            let unitOptions = '<option value="">Select Unit</option>';
+            UNIT_TYPES.forEach(group => {
+                unitOptions += `<optgroup label="${group.group}">`;
+                group.items.forEach(item => {
+                    const selected = item === defaultUnitName ? 'selected' : '';
+                    unitOptions += `<option value="${item}" ${selected}>${item}</option>`;
+                });
+                unitOptions += '</optgroup>';
+            });
+
+            let materialOptions = '';
+            MATERIALS.forEach(material => {
+                materialOptions += `<option value="${material}">${material}</option>`;
+            });
+
+            // UPDATED UNIT HTML: Delete button is now on the left (unit-delete-wrapper)
+            unitDiv.innerHTML = `
+                <div class="unit-delete-wrapper">
+                    <button class="btn-icon-delete" title="Delete Unit" onclick="deleteUnit('${floorId}', '${sectionId}', '${unitId}')">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="unit-content-wrapper">
+                    <div class="unit-form">
+                        <div class="form-group">
+                            <label>Unit:</label>
+                            <select id="${unitId}-unit" onchange="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
+                                ${unitOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Manual/Modular:</label>
+                            <select id="${unitId}-mode" onchange="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
+                                <option value="manual">Manual</option>
+                                <option value="modular">Modular</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Material:</label>
+                            <select id="${unitId}-material" onchange="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
+                                ${materialOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Length (ft):</label>
+                            <input type="number" id="${unitId}-length" step="0.1" placeholder="0" 
+                                oninput="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
+                        </div>
+                        <div class="form-group">
+                            <label>Height (ft):</label>
+                            <input type="number" id="${unitId}-height" step="0.1" placeholder="0" 
+                                oninput="updateUnit('${floorId}', '${sectionId}', '${unitId}')">
+                        </div>
+                    </div>
+                    <div class="amount-display">
+                        Area: <span id="${unitId}-area">0</span> sqft | 
+                        Rate: ₹<span id="${unitId}-rate">0</span>/sqft | 
+                        Amount: ₹<span id="${unitId}-amount">0</span>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(unitDiv);
+
+            floors[floorId].sections[sectionId].units[unitId] = {
+                unit: defaultUnitName,
+                mode: 'manual',
+                material: MATERIALS[0],
+                length: 0,
+                height: 0,
+                area: 0,
+                rate: PRICING.manual[MATERIALS[0]],
+                amount: 0
+            };
+
+            updateUnit(floorId, sectionId, unitId);
+        }
+
+        function updateUnit(floorId, sectionId, unitId) {
+            const unit = floors[floorId].sections[sectionId].units[unitId];
+
+            unit.unit = document.getElementById(`${unitId}-unit`).value;
+            unit.mode = document.getElementById(`${unitId}-mode`).value;
+            unit.material = document.getElementById(`${unitId}-material`).value;
+            unit.length = parseFloat(document.getElementById(`${unitId}-length`).value) || 0;
+            unit.height = parseFloat(document.getElementById(`${unitId}-height`).value) || 0;
+
+            unit.area = (unit.length * unit.height).toFixed(2);
+            unit.rate = PRICING[unit.mode][unit.material];
+            unit.amount = (unit.area * unit.rate).toFixed(2);
+
+            document.getElementById(`${unitId}-area`).textContent = unit.area;
+            document.getElementById(`${unitId}-rate`).textContent = unit.rate;
+            document.getElementById(`${unitId}-amount`).textContent = unit.amount;
+
+            updateGrandTotal();
+        }
+
+        function deleteUnit(floorId, sectionId, unitId) {
+            document.getElementById(unitId).remove();
+            delete floors[floorId].sections[sectionId].units[unitId];
+            updateGrandTotal();
+        }
+
+        // ============ TOTAL CALCULATION ============
+        function updateGrandTotal() {
+            let total = 0;
+
+            Object.values(floors).forEach(floor => {
+                Object.values(floor.sections).forEach(section => {
+                    Object.values(section.units).forEach(unit => {
+                        total += parseFloat(unit.amount || 0);
+                    });
+                });
+            });
+
+            document.getElementById('grandTotal').textContent = total.toFixed(2);
+        }
+
+        // ============ PDF GENERATION ============
+        function generatePDF() {
+            const total = document.getElementById('grandTotal').textContent;
+
+            let htmlContent = '<!DOCTYPE html><html><head><meta charset="UTF-8">';
+            htmlContent += '<title>Quotation - ' + clientData.name + '</title>';
+            htmlContent += '<style>';
+            htmlContent += '@page { size: A4; margin: 10mm; }';
+            htmlContent += 'body { font-family: Arial, sans-serif; font-size: 9pt; margin: 0; padding: 10px; }';
+            htmlContent += 'h1 { text-align: center; font-size: 18pt; margin: 5px 0; }';
+            htmlContent += 'h2 { font-size: 11pt; margin: 8px 0 5px 0; }';
+            htmlContent += '.client-info { border: 1px solid #000; padding: 8px; margin: 10px 0; }';
+            htmlContent += '.client-info table { width: 100%; border-collapse: collapse; }';
+            htmlContent += '.client-info td { padding: 3px; border: none; font-size: 9pt; }';
+            htmlContent += '.section-title { background: #000; color: white; padding: 5px 8px; margin: 8px 0 5px 0; font-size: 10pt; font-weight: bold; }';
+            htmlContent += 'table.data { width: 100%; border-collapse: collapse; margin: 5px 0 10px 0; font-size: 8pt; table-layout: fixed; }';
+            htmlContent += 'table.data th, table.data td { border: 1px solid #000; padding: 4px 6px; text-align: left; }';
+            htmlContent += 'table.data th { background: #e0e0e0; font-weight: bold; text-align: center; }';
+            htmlContent += 'table.data col:nth-child(1) { width: 20%; }';
+            htmlContent += 'table.data col:nth-child(2) { width: 12%; }';
+            htmlContent += 'table.data col:nth-child(3) { width: 24%; }';
+            htmlContent += 'table.data col:nth-child(4) { width: 8%; }';
+            htmlContent += 'table.data col:nth-child(5) { width: 8%; }';
+            htmlContent += 'table.data col:nth-child(6) { width: 10%; }';
+            htmlContent += 'table.data col:nth-child(7) { width: 10%; }';
+            htmlContent += 'table.data col:nth-child(8) { width: 8%; }';
+            htmlContent += 'table.data td:nth-child(4), table.data td:nth-child(5) { text-align: center; }';
+            htmlContent += 'table.data td:nth-child(6), table.data td:nth-child(7), table.data td:nth-child(8) { text-align: right; }';
+            htmlContent += '.grand-total { background: #000; color: white; padding: 10px; text-align: center; font-size: 14pt; font-weight: bold; margin: 15px 0; }';
+            htmlContent += '.specs { font-size: 8pt; line-height: 1.4; margin: 10px 0; }';
+            htmlContent += '.specs h3 { font-size: 10pt; margin: 10px 0 5px 0; }';
+            htmlContent += '.specs p { margin: 5px 0; }';
+            htmlContent += '.specs ul { margin: 5px 0; padding-left: 20px; }';
+            htmlContent += '.page-break { page-break-before: always; }';
+            htmlContent += '</style></head><body>';
+
+            htmlContent += '<h1>NAMMANE INTERIORS - QUOTATION</h1>';
+
+            htmlContent += '<div class="client-info"><table>';
+            htmlContent += '<tr><td style="width:50%;"><strong>CLIENT NAME:</strong> ' + clientData.name + '</td>';
+            htmlContent += '<td style="width:50%;"><strong>DATE:</strong> ' + clientData.date + '</td></tr>';
+            htmlContent += '<tr><td><strong>LOCATION:</strong> ' + clientData.address + '</td>';
+            htmlContent += '<td><strong>MOB NO:</strong> ' + clientData.phone + '</td></tr>';
+            htmlContent += '</table></div>';
+
+            htmlContent += '<div class="section-title">DESIGN SPECIFICATION</div>';
+
+            Object.values(floors).forEach(function (floor) {
+                htmlContent += '<h2>' + floor.name + '</h2>';
+
+                Object.values(floor.sections).forEach(function (section) {
+                    const units = Object.values(section.units);
+                    if (units.length > 0) {
+                        htmlContent += '<div style="font-weight: bold; margin: 8px 0 4px 0; text-transform: uppercase;">' + section.name + '</div>';
+                        htmlContent += '<table class="data">';
+                        htmlContent += '<colgroup><col><col><col><col><col><col><col><col></colgroup>';
+                        htmlContent += '<thead><tr>';
+                        htmlContent += '<th>UNIT</th>';
+                        htmlContent += '<th>Manual/<br>Modular</th>';
+                        htmlContent += '<th>Material Specification</th>';
+                        htmlContent += '<th>L in ft</th>';
+                        htmlContent += '<th>B in ft</th>';
+                        htmlContent += '<th>Area<br>(Sqft)</th>';
+                        htmlContent += '<th>Rate per<br>Sqft</th>';
+                        htmlContent += '<th>Amount</th>';
+                        htmlContent += '</tr></thead><tbody>';
+
+                        units.forEach(function (unit) {
+                            htmlContent += '<tr>';
+                            htmlContent += '<td>' + (unit.unit || '-') + '</td>';
+                            htmlContent += '<td style="text-transform: uppercase;">' + unit.mode + '</td>';
+                            htmlContent += '<td>' + unit.material + '</td>';
+                            htmlContent += '<td style="text-align: center;">' + unit.length + '</td>';
+                            htmlContent += '<td style="text-align: center;">' + unit.height + '</td>';
+                            htmlContent += '<td>' + unit.area + '</td>';
+                            htmlContent += '<td>' + unit.rate + '</td>';
+                            htmlContent += '<td><strong>' + unit.amount + '</strong></td>';
+                            htmlContent += '</tr>';
+                        });
+
+                        htmlContent += '</tbody></table>';
+                    }
+                });
+            });
+
+            htmlContent += '<div class="grand-total">GRAND TOTAL= ' + total + '</div>';
+
+            htmlContent += '<div class="page-break"></div>';
+            htmlContent += '<div class="specs">';
+            htmlContent += '<h2 style="text-align: center;">MATERIAL SPECIFICATION</h2>';
+
+            htmlContent += '<h3>Plywood & Laminates:</h3>';
+            htmlContent += '<p>For all modular finish carcass, loft, shutters, panelling, partitions & storage units are made up of 16mm IS 303 MR Grade Plywood with 1mm decorative laminate finish (MERINO /SKYDECOR /ADVANCE /GREENLAM /EQUIVALENT) and 0.8mm fabric laminate outer & inner face of plywood respectively as per the client selection. All exposed edges of ply sealed with 0.8mm thick edge banding, 2mm thick edge banding for shutters & 1.3mm thick edge banding for acrylic.</p>';
+            htmlContent += '<p><strong>Note:</strong> In case of Kitchen base unit & vanity (only in wet area) BWP grade (Boiling Water Proof) IS 710 of 16mm thick ply is used. HDHMR 16mm grade ply is used for acrylic finish laminates. In case the depth of the carcass exceeds the standard dimension( >600mm) then there will be increase in the rate per sqft accordingly.</p>';
+
+            htmlContent += '<h3>Accessories & Hardware:</h3>';
+            htmlContent += '<p>Most of the hardware items are of EBCO/EQUIVALENT Brand. (HETTICH/HAFELE only if specified). Handles, knobs & SS hanger rods are of good brand. Locks-Europa.</p>';
+
+            htmlContent += '<h3>False ceiling & Lighting:</h3>';
+            htmlContent += '<p>12mm Gypsum board on GI channel framework (SAINT GOBAIN/INDIA GYPSUM/ EQUIVALENT). Cove lighting with LED strips & down lights (PHILIPS/HAVEL/WIPRO/EQUIVALENT). Provision of lights only if client specifies. The quotation for false ceiling does not includes the putty and painting cost, it comes under the scope of client. <strong>NOTE: PAINTING COST FOR FALSE CEILING IS NOT INCLUDED IN THE QUOTATION AMOUNT MENTIONED ABOVE. IT COMES UNDER THE SCOPE OF CLIENT.</strong></p>';
+
+            htmlContent += '<h2 style="text-align: center; margin: 20px 0 15px 0;">TERMS & CONDITIONS</h2>';
+
+            htmlContent += '<p><strong>1. Quotation Validity:</strong> 30 days from the date of issue. Quoted rate may vary based on final design.</p>';
+            htmlContent += '<p><strong>2. Design Revisions:</strong> Up to 2 free design revisions are included. Further changes may incur additional charges.</p>';
+            htmlContent += '<p><strong>3. Scope of Work:</strong> The scope includes only the items and services mentioned in this quotation. Any additional work will be treated as variation and charged extra.</p>';
+            htmlContent += '<p><strong>4. Materials & Brands:</strong> Materials mentioned will be used or matched as closely as possible. Equivalent brands will be used if specified materials are unavailable, with client approval.</p>';
+            htmlContent += '<p><strong>5. Work Schedule:</strong> The estimated project completion time is 6 to 8 weeks from the date of clearance of 50% advance payment.</p>';
+
+            htmlContent += '<p><strong>6. Payment Terms:</strong></p>';
+            htmlContent += '<ul>';
+            htmlContent += '<li>10% advance on booking</li>';
+            htmlContent += '<li>50% for commencement of work (40% in case advanced earlier)</li>';
+            htmlContent += '<li>25% on 1st stage of material delivery</li>';
+            htmlContent += '<li>20% on 2nd stage of material delivery</li>';
+            htmlContent += '<li>5% upon handover</li>';
+            htmlContent += '</ul>';
+
+            htmlContent += '<p><strong>7. GST & Taxes:</strong> Quoted prices are exclusive of GST. Any changes in tax structure will be applicable at the time of billing.</p>';
+            htmlContent += '<p><strong>8. Warranty:</strong> A standard 1-year service warranty is applicable on workmanship. Manufacturer warranty applies for plywood (10 years) and not for hardwares.</p>';
+            htmlContent += '<p><strong>9. Cancellation / Refunds:</strong> All payments made at each stage are Non-Refundable.</p>';
+            htmlContent += '<p><strong>10. Final Handover:</strong> The site will be handed over only after full and final payment is received.</p>';
+
+            htmlContent += '</div></body></html>';
+
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Quotation_' + clientData.name.replace(/\s+/g, '_') + '_' + new Date().getTime() + '.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                alert('Quotation HTML file downloaded! Open it in your browser and use "Print to PDF" to save as PDF.');
+            } else {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(htmlContent);
+                printWindow.document.close();
+
+                printWindow.onload = function () {
+                    printWindow.focus();
+                    setTimeout(function () {
+                        printWindow.print();
+                    }, 250);
+                };
+            }
+        }
+
+        function printQuotation() {
+            window.print();
+        }
     </script>
-  </body>
+</body>
+
 </html>
