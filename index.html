@@ -761,6 +761,65 @@
         }
 
         // ============ UNIT FUNCTIONS ============
+        function getRelevantUnitTypes(sectionName) {
+            // Normalize section name for matching
+            const normalizedName = sectionName.toLowerCase().trim();
+
+            // Define keyword mappings to unit groups (can have multiple groups per keyword)
+            const keywordMapping = {
+                'kitchen': ['Kitchen Units', 'Storage & Wardrobes', 'Panels & Partitions'],
+                'living': ['Living Room', 'Panels & Partitions'],
+                'bedroom': ['Bedroom Furniture', 'Storage & Wardrobes', 'Panels & Partitions'],
+                'puja': ['Puja & Mandir'],
+                'pooja': ['Puja & Mandir'],
+                'mandir': ['Puja & Mandir'],
+                'temple': ['Puja & Mandir'],
+                'bathroom': ['Bathroom & Utility'],
+                'vanity': ['Bathroom & Utility'],
+                'toilet': ['Bathroom & Utility'],
+                'washroom': ['Bathroom & Utility'],
+                'study': ['Study & Office', 'Storage & Wardrobes'],
+                'office': ['Study & Office', 'Storage & Wardrobes'],
+                'dining': ['Dining Area'],
+                'garage': ['Storage & Wardrobes'],
+                'store': ['Storage & Wardrobes'],
+                'storage': ['Storage & Wardrobes'],
+                'wardrobe': ['Storage & Wardrobes'],
+                'balcony': ['Storage & Wardrobes'],
+                'staircase': ['Storage & Wardrobes'],
+                'terrace': ['Storage & Wardrobes'],
+                'panel': ['Panels & Partitions'],
+                'partition': ['Panels & Partitions'],
+                'seating': ['Seating'],
+                'window': ['Seating']
+            };
+
+            // Find matching groups based on keywords
+            let matchedGroups = [];
+            for (const [keyword, groupNames] of Object.entries(keywordMapping)) {
+                if (normalizedName.includes(keyword)) {
+                    matchedGroups.push(...groupNames);
+                }
+            }
+
+            // If no matches found, return all groups
+            if (matchedGroups.length === 0) {
+                return UNIT_TYPES;
+            }
+
+            // Remove duplicates and filter UNIT_TYPES
+            matchedGroups = [...new Set(matchedGroups)];
+            const relevantGroups = UNIT_TYPES.filter(group => matchedGroups.includes(group.group));
+
+            // Always include 'Other' group
+            const otherGroup = UNIT_TYPES.find(group => group.group === 'Other');
+            if (otherGroup && !relevantGroups.includes(otherGroup)) {
+                relevantGroups.push(otherGroup);
+            }
+
+            return relevantGroups;
+        }
+
         function addUnit(floorId, sectionId, defaultUnitName = '') {
             const unitId = `unit-${++unitCounter}`;
             const container = document.getElementById(`${sectionId}-units`);
@@ -769,8 +828,12 @@
             unitDiv.className = 'unit-item';
             unitDiv.id = unitId;
 
+            // Get section name for filtering units
+            const sectionName = floors[floorId].sections[sectionId].name;
+            const relevantUnitTypes = getRelevantUnitTypes(sectionName);
+
             let unitOptions = '<option value="">Select Unit</option>';
-            UNIT_TYPES.forEach(group => {
+            relevantUnitTypes.forEach(group => {
                 unitOptions += `<optgroup label="${group.group}">`;
                 group.items.forEach(item => {
                     const selected = item === defaultUnitName ? 'selected' : '';
