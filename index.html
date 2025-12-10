@@ -640,7 +640,7 @@
         // ============ FLOOR FUNCTIONS ============
         function addFloor() {
             const floorId = `floor-${++floorCounter}`;
-            const floorName = floorCounter === 1 ? 'GROUND FLOOR' : `FLOOR ${floorCounter}`;
+            const floorName = floorCounter === 1 ? 'GROUND FLOOR' : `FLOOR ${floorCounter - 1}`;
 
             floors[floorId] = {
                 name: floorName,
